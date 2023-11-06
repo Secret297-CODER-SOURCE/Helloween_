@@ -8,6 +8,8 @@
 #include <codecvt>
 using namespace std;
 
+//test comment
+
 void SearchFileInDirectory(const std::string& targetFileName, const std::string& searchDirectory) {
     try {
         for (const auto& entry : filesystem::directory_iterator(searchDirectory)) {
