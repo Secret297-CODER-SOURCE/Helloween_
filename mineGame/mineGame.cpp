@@ -6,7 +6,7 @@
 #pragma warning(disable : 4996)
 
 using namespace std;
-
+ 
 void cryptFile(const string filePath) {
 
     //Открываем и считываем размер файлa
