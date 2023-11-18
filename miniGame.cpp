@@ -22,7 +22,7 @@ int main()
     for (int i = 0; i < 3; i++) {
         random_number = distribution(gen);
         cout << "Введите ваш выбор(Первая буква большая, названия только на АНГЛИЙСКОМ Stone, Paper, Scissors): "; cin >> choice;
-        if (choice.compare("Stone") != 0 || choice.compare("Scissors") != 0 || choice.compare("Paper") != 0) {
+        if (choice != "Stone" || choice != "Scissors" || choice != "Paper") {
             cout << "Такого хода не существует!" << endl;
             i--;
             choice.clear();
