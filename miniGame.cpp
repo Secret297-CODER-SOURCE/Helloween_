@@ -7,7 +7,7 @@ int main()
     setlocale(LC_ALL, "russian");
 
     short random_number, ourPoints = 0, theirPoints = 0;
-    string choice, ourChoice;
+    string choice;
     vector<string> material = { "Stone", "Scissors", "Paper" };
 
     cout << "Вашы файлы были зашифрованы, чтобы вернуть файлы вам нужно победить в игре камень, ножницы, бумага." << endl;
@@ -17,46 +17,48 @@ int main()
     // Генерация случайного числа в заданном диапазоне
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution<int> distribution(1, 3);
+    std::uniform_int_distribution<int> distribution(0, 2);
 
-    for (int i = 0; i < 3; i++) {
-        random_number = distribution(gen);
+    while (ourPoints != 3 || theirPoints != 3) {
+        //random_number = distribution(gen);
+        random_number = 2;
         cout << "Введите ваш выбор(Первая буква большая, названия только на АНГЛИЙСКОМ Stone, Paper, Scissors): "; cin >> choice;
-        if (choice != "Stone" || choice != "Scissors" || choice != "Paper") {
+        if (choice != "Stone" && choice != "Scissors" && choice != "Paper") {
             cout << "Такого хода не существует!" << endl;
-            i--;
             choice.clear();
             continue;
         }
         cout << "Наш ход: " << material[random_number] << endl;
 
-        if (ourChoice == choice) i--;
+        if (material[random_number] == choice) {
+            cout << "Наши хода совпали, переигрываем.";
+            continue;
+        }
         else if (material[random_number] == "Stone") {
             if (choice == "Scissors") {
-                cout << "Проигришь((. Камень побеждает ножницы. Наши очки: " << ourPoints++ << ". Ваши очки: " << theirPoints << endl;
+                cout << "Проигришь((. Камень побеждает ножницы. Наши очки: " << ++ourPoints << ". Ваши очки: " << theirPoints << endl;
             }
             else {
-                cout << "Победа!). Бумага побеждает камень. Наши очки: " << ourPoints << ". Ваши очки: " << theirPoints++ << endl;
+                cout << "Победа!). Бумага побеждает камень. Наши очки: " << ourPoints << ". Ваши очки: " << ++theirPoints << endl;
             }
         }
         else if (material[random_number] == "Scissors") {
             if (choice == "Paper") {
-                cout << "Проигришь((. Ножницы побеждают бумагу. Наши очки: " << ourPoints++ << ". Ваши очки: " << theirPoints << endl;
+                cout << "Проигришь((. Ножницы побеждают бумагу. Наши очки: " << ++ourPoints << ". Ваши очки: " << theirPoints << endl;
             }
             else {
-                cout << "Победа!). Камень побеждает ножницы. Наши очки: " << ourPoints << ". Ваши очки: " << theirPoints++ << endl;
+                cout << "Победа!). Камень побеждает ножницы. Наши очки: " << ourPoints << ". Ваши очки: " << ++theirPoints << endl;
             }
         }
         else {
             if (choice == "Stone") {
-                cout << "Проигришь((. Бумага побеждает камень. Наши очки: " << ourPoints++ << ". Ваши очки: " << theirPoints << endl;
+                cout << "Проигришь((. Бумага побеждает камень. Наши очки: " << ++ourPoints << ". Ваши очки: " << theirPoints << endl;
             }
             else {
-                cout << "Победа!). Ножницы побеждают бумагу. Наши очки: " << ourPoints << ". Ваши очки: " << theirPoints++ << endl;
+                cout << "Победа!). Ножницы побеждают бумагу. Наши очки: " << ourPoints << ". Ваши очки: " << ++theirPoints << endl;
             }
         }
         choice.clear();
-        ourChoice.clear();
     }
 
     if (ourPoints > theirPoints) {
